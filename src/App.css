@@ -1,8 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+/* Reset */
 * {
   margin: 0;
   box-sizing: border-box;
 }
 
+.app {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(202, 202, 202);
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Form */
+form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 6em 8em;
+  background-color: rgb(238, 238, 238);
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px;
+  box-shadow: 1px 1px 5px 0px #000;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+}
+
+form label,
+form p {
+  text-align: center;
+  margin: 0.5em 0 0.2em 0;
+}
+
+form textarea {
+  max-width: 500px;
+  min-width: 150px;
+  max-height: 30em;
+  min-height: 4em;
+}
+
+form .description-container span {
+  align-self: flex-end;
+  user-select: none;
+  width: fit-content;
+}
+
+form .confirmation-container div {
+  display: block;
+}
+
+input {
+  font-size: 1em;
+}
+
+select {
+  font-size: 1em;
+  font-family: "Open Sans", sans-serif;
+}
+
+input[disabled] {
+  color: #222;
+}
+
+button {
+  font-size: 1em;
+  margin-top: 1.5em;
+  cursor: pointer;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Response messages */
 section.response-messages {
   position: absolute;
   top: 50%;
@@ -16,7 +89,7 @@ div.failure-message {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  padding: 2em;
+  padding: 1em 2em;
   border-radius: 1em;
 }
 
@@ -39,4 +112,8 @@ div.failure-message {
 
 div.show-message {
   display: flex;
+}
+
+.hide-form {
+  display: none;
 }

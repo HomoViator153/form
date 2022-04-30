@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
@@ -8,15 +7,71 @@ function App() {
     confirmation: "",
     vatValue: "",
     priceNetto: "",
-    priceBrutto: "",
+    priceBrutto: 0,
   });
 
   const { description, confirmation, vatValue, priceNetto, priceBrutto } = formState;
 
-  const updateInputValue = (id, value) => {
-    console.log(id, value);
-    setFormState({ ...formState, [id]: value });
+  // Form Validation
+  useEffect(() => {
+    const descriptionValidation = () => {
+      const descriptionInput = document.getElementById("description");
+      if (description.length === 0) descriptionInput.setCustomValidity("Text is required");
+      else if (description.length > 255) {
+        const maxLength = description.substring(0, 255);
+        setFormState({ ...formState, description: maxLength });
+        descriptionInput.setCustomValidity("You can't enter more than 255 characters");
+        descriptionInput.reportValidity();
+      } else descriptionInput.setCustomValidity("");
+    };
+    descriptionValidation();
+  }, [description]);
+
+  useEffect(() => {
+    const priceNettoInput = document.getElementById("priceNetto");
+    if (priceNetto === "" || priceNetto === ".")
+      priceNettoInput.setCustomValidity("Please, input number");
+    else priceNettoInput.setCustomValidity("");
+  }, [priceNetto]);
+
+  const priceNettoValidation = (value) => {
+    const valueExceptLastChar = value.slice(0, value.length - 1);
+    if (valueExceptLastChar.includes(".") && valueExceptLastChar.match(/\d\d$/)) {
+      value = value.replace(/\d$/, "");
+    }
+    if (valueExceptLastChar.includes(".")) {
+      value = value.replace(/\.$/, "").replace(/,$/, "");
+    }
+    const onlyNumberValue = value
+      .replace(/[^.,0-9]/g, "")
+      .replace(/^0\d/, 0)
+      .replace(",", ".");
+    setFormState({ ...formState, priceNetto: onlyNumberValue });
   };
+
+  const updateInputValue = (id, value) => {
+    if (id === "priceNetto") priceNettoValidation(value);
+    else setFormState({ ...formState, [id]: value });
+  };
+
+  const confirmationAndVatValidation = () => {
+    const confirmationInput = document.getElementById("confirmationYes");
+    if (confirmation === "") confirmationInput.setCustomValidity("Text is required");
+    else confirmationInput.setCustomValidity("");
+
+    const vatValueInput = document.getElementById("vatValue");
+    if (vatValue === "") vatValueInput.setCustomValidity("Text is required");
+    else vatValueInput.setCustomValidity("");
+  };
+
+  // Calculating brutto price
+  useEffect(() => {
+    const calculatePriceBrutto = () => {
+      const calculatedPriceBrutto = (1 + Number(vatValue) / 100) * priceNetto;
+      setFormState({ ...formState, priceBrutto: calculatedPriceBrutto.toFixed(2) });
+    };
+    calculatePriceBrutto();
+  }, [priceNetto, vatValue]);
 
   return (
     <div className="App">
@@ -41,23 +96,23 @@ function App() {
               <input
                 type="radio"
                 name="confirmation"
-                id="confirmation-yes"
+                id="confirmationYes"
                 value="yes"
                 required
                 onChange={(e) => updateInputValue(e.target.name, e.target.value)}
               />
-              <label htmlFor="confirmation-yes"> Yes</label>
+              <label htmlFor="confirmationYes"> Yes</label>
             </div>
             <div>
               <input
                 type="radio"
                 name="confirmation"
-                id="confirmation-no"
+                id="confirmationNo"
                 value="no"
                 required
                 onChange={(e) => updateInputValue(e.target.name, e.target.value)}
               />
-              <label htmlFor="confirmation-no"> No</label>
+              <label htmlFor="confirmationNo"> No</label>
             </div>
           </div>
           <div className="vat-container">
@@ -100,6 +155,9 @@ function App() {
               value={priceBrutto}
             />
           </div>
+          <button type="submit" onClick={confirmationAndVatValidation}>
+            Submit
+          </button>
         </form>
       </main>
     </div>

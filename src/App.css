@@ -16,9 +16,13 @@ div.failure-message {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  width: 20rem;
-  height: 6rem;
-  border-radius: 10px;
+  padding: 2em;
+  border-radius: 1em;
+}
+
+div.success-message h4,
+div.failure-message h4 {
+  margin-bottom: 1em;
 }
 
 div.success-message {

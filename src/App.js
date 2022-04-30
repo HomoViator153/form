@@ -91,8 +91,10 @@ function App() {
   };
 
   const handleResponse = (e) => {
-    if (e.target.readyState && e.target.status) console.log("success!");
-    else console.log("something went wrong");
+    const successMsg = document.querySelector(".success-message");
+    const failureMsg = document.querySelector(".failure-message");
+    if (e.target.readyState && e.target.status) successMsg.classList.add("show-message");
+    else failureMsg.classList.add("show-message");
   };
 
   return (

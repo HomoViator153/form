@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
+const URL = "https://polished-sea-922.getsandbox.com:443/users";
+
 function App() {
   const [formState, setFormState] = useState({
     description: "",
@@ -73,10 +75,28 @@ function App() {
     calculatePriceBrutto();
   }, [priceNetto, vatValue]);
 
+  //Sending form data
+  const sendData = (e) => {
+    e.preventDefault();
+    const form = document.getElementById("form");
+    const request = new XMLHttpRequest();
+    const data = new FormData(form);
+
+    request.open("POST", URL, true);
+    request.send(data);
+
+    request.addEventListener("loadend", handleResponse);
+  };
+
+  const handleResponse = (e) => {
+    if (e.target.readyState && e.target.status) console.log("success!");
+    else console.log("something went wrong");
+  };
+
   return (
     <div className="App">
       <main>
-        <form id="form">
+        <form id="form" onSubmit={(e) => sendData(e)}>
           <div className="description-container">
             <label htmlFor="description">Description</label>
             <textarea

@@ -4,10 +4,10 @@ This app is simply form with validation that submits form data to mock REST API 
 
 ## How to install
 
-- Clone this repository using: 'git clone https://github.com/HomoViator153/form.git'
+- Clone this repository using: git clone https://github.com/HomoViator153/form.git
 
-- Install dependencies using: 'npm install'
+- Install dependencies using: npm install
 
-- Run the app in the development mode using: 'npm start'
+- Run the app in the development mode using: npm start
 
 - Open [http://localhost:3000](http://localhost:3000) to view it in your browser.

@@ -15,6 +15,11 @@ function App() {
   const { description, confirmation, vatValue, priceNetto, priceBrutto } = formState;
 
   // Form Validation
+  const updateInputValue = (id, value) => {
+    if (id === "priceNetto") priceNettoValidation(value);
+    else setFormState({ ...formState, [id]: value });
+  };
+
   useEffect(() => {
     const descriptionValidation = () => {
       const descriptionInput = document.getElementById("description");
@@ -37,23 +42,29 @@ function App() {
   }, [priceNetto]);
 
   const priceNettoValidation = (value) => {
+    const priceNettoInput = document.getElementById("priceNetto");
     const valueExceptLastChar = value.slice(0, value.length - 1);
+
     if (valueExceptLastChar.includes(".") && valueExceptLastChar.match(/\d\d$/)) {
+      priceNettoInput.setCustomValidity("Please, input number");
+      priceNettoInput.reportValidity();
       value = value.replace(/\d$/, "");
     }
-    if (valueExceptLastChar.includes(".")) {
+    if (valueExceptLastChar.includes(".") && value.match(/,$|\.$/)) {
+      priceNettoInput.setCustomValidity("Please, input number");
+      priceNettoInput.reportValidity();
       value = value.replace(/\.$/, "").replace(/,$/, "");
     }
+
     const onlyNumberValue = value
       .replace(/[^.,0-9]/g, "")
       .replace(/^0\d/, 0)
       .replace(",", ".");
     setFormState({ ...formState, priceNetto: onlyNumberValue });
-  };
-
-  const updateInputValue = (id, value) => {
-    if (id === "priceNetto") priceNettoValidation(value);
-    else setFormState({ ...formState, [id]: value });
+    if (value.match(/[^.,0-9]/g) || value.match(/^00/)) {
+      priceNettoInput.setCustomValidity("Please, input number");
+      priceNettoInput.reportValidity();
+    }
   };
 
   const confirmationAndVatValidation = () => {
@@ -91,14 +102,23 @@ function App() {
   };
 
   const handleResponse = (e) => {
+    const form = document.getElementById("form");
     const successMsg = document.querySelector(".success-message");
     const failureMsg = document.querySelector(".failure-message");
+
+    form.classList.add("hide-form");
     if (e.target.readyState && e.target.status) successMsg.classList.add("show-message");
     else failureMsg.classList.add("show-message");
   };
 
+  //Reload page
+  const reloadPage = () => {
+    window.location.reload();
+    return false;
+  };
+
   return (
-    <div className="App">
+    <div className="app">
       <main>
         <form id="form" onSubmit={(e) => sendData(e)}>
           <div className="description-container">
@@ -106,7 +126,7 @@ function App() {
             <textarea
               name="description"
               id="description"
-              cols="40"
+              cols="35"
               rows="10"
               required
               value={description}
@@ -188,10 +208,12 @@ function App() {
         <div className="success-message">
           <h4>Gratulations!</h4>
           <p>Form has been sent successfully.</p>
+          <button onClick={reloadPage}>Return</button>
         </div>
         <div className="failure-message">
           <h4>Something went wrong.</h4>
           <p>An error occurred while submitting the form.</p>
+          <button onClick={reloadPage}>Try again</button>
         </div>
       </section>
     </div>

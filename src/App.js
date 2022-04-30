@@ -65,6 +65,8 @@ function App() {
       priceNettoInput.setCustomValidity("Please, input number");
       priceNettoInput.reportValidity();
     }
+
+    priceNettoInput.setCustomValidity("");
   };
 
   const confirmationAndVatValidation = () => {

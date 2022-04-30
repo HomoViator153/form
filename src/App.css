@@ -2,3 +2,37 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+section.response-messages {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+div.success-message,
+div.failure-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 20rem;
+  height: 6rem;
+  border-radius: 10px;
+}
+
+div.success-message {
+  display: none;
+  border: 2px solid rgb(0, 92, 0);
+  background-color: rgba(0, 222, 0, 0.297);
+}
+
+div.failure-message {
+  display: none;
+  border: 2px solid rgb(92, 15, 0);
+  background-color: rgba(202, 50, 0, 0.297);
+}
+
+div.show-message {
+  display: flex;
+}

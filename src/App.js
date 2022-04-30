@@ -182,6 +182,16 @@ function App() {
           </button>
         </form>
       </main>
+      <section className="response-messages">
+        <div className="success-message">
+          <h4>Gratulations!</h4>
+          <p>Form has been sent successfully.</p>
+        </div>
+        <div className="failure-message">
+          <h4>Something went wrong.</h4>
+          <p>An error occurred while submitting the form.</p>
+        </div>
+      </section>
     </div>
   );
 }

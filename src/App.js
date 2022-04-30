@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-const URL = "https://polished-sea-922.getsandbox.com:443/users";
+const URL = "https://polished-sea-922.getsandbox.com:443/products";
 
 function App() {
   const [formState, setFormState] = useState({
@@ -81,6 +81,8 @@ function App() {
     const form = document.getElementById("form");
     const request = new XMLHttpRequest();
     const data = new FormData(form);
+
+    data.append("priceBrutto", priceBrutto);
 
     request.open("POST", URL, true);
     request.send(data);
